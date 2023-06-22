@@ -1,8 +1,25 @@
-import { StyleSheet, Text, View, TextInput,KeyboardAvoidingView, TouchableOpacity,Platform } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, TextInput,KeyboardAvoidingView, TouchableOpacity,Platform, Keyboard } from 'react-native';
+import React, { useState } from 'react';
 import Task from '../components/Task';
 
 const TodayToDoList = () => {
+    const [task,setTask] = useState();
+    const [taskItems,setTaskItems] = useState([]);
+   
+    const handleTaskAdd = () => {
+        if(task){
+            setTaskItems([...taskItems, task])
+            setTask('');
+        }else{
+            alert('Please Enter The Task')
+        }    
+    }
+    const completedTask = (index) => {
+        let itemsCopy = [...taskItems];
+        itemsCopy.splice(index,1);
+        setTaskItems(itemsCopy);
+
+    }
   return (
     <View style={styles.container}>
       {/* Today's Task Screen */}
@@ -10,8 +27,15 @@ const TodayToDoList = () => {
         <Text style={styles.sectionTitle}>Today's Task</Text>
             <View style={styles.items}>
         {/* this is where the task will go!!         */}
-            <Task text = "task 1"/>
-            <Task text = "task 2"/>  
+        {
+            taskItems.map((item, index)=>{
+                return (
+                    <TouchableOpacity key={index} onPress={()=>{completedTask(index)}}>
+                        <Task  text={item} />
+                    </TouchableOpacity>
+                )
+                })
+        }
             </View>
       </View>
        {/* write a task section */}
@@ -21,8 +45,10 @@ const TodayToDoList = () => {
          >
          <TextInput placeholder="write a task" 
             style = {styles.input}
+            value = {task}
+            onChangeText={(text)=>setTask(text)}
          />
-         <TouchableOpacity>
+         <TouchableOpacity onPress={()=>handleTaskAdd()}>
             <View style = {styles.addWrapper}>
                 <Text style= {styles.addText}> +</Text>
             </View>
