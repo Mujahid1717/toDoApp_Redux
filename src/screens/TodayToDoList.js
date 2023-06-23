@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput,KeyboardAvoidingView, TouchableOpacity,Platform, Keyboard } from 'react-native';
+import { StyleSheet, Text, View, TextInput,KeyboardAvoidingView, TouchableOpacity,Platform, Keyboard,Alert, ScrollView} from 'react-native';
 import React, { useState } from 'react';
 import Task from '../components/Task';
 
@@ -11,22 +11,23 @@ const TodayToDoList = () => {
             setTaskItems([...taskItems, task])
             setTask('');
         }else{
-            alert('Please Enter The Task')
+            Alert.alert('Error','Please Enter the Task')
         }    
     }
     const completedTask = (index) => {
         let itemsCopy = [...taskItems];
         itemsCopy.splice(index,1);
         setTaskItems(itemsCopy);
-
     }
   return (
+    
     <View style={styles.container}>
+        <ScrollView>
       {/* Today's Task Screen */}
       <View style={styles.taskWrapper}>
         <Text style={styles.sectionTitle}>Today's Task</Text>
             <View style={styles.items}>
-        {/* this is where the task will go!!         */}
+             {/* this is where the task will go!!         */}
         {
             taskItems.map((item, index)=>{
                 return (
@@ -36,8 +37,9 @@ const TodayToDoList = () => {
                 )
                 })
         }
-            </View>
-      </View>
+            </View>    
+       </View>
+      </ScrollView>
        {/* write a task section */}
        <KeyboardAvoidingView 
          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -55,12 +57,13 @@ const TodayToDoList = () => {
          </TouchableOpacity>
          </KeyboardAvoidingView>
     </View>
+    
   );
 };
 const styles = StyleSheet.create({
     container:{
         flex:1,
-        backgroundColor:'#e9e9e9'
+        backgroundColor:'#efefefte'
     },
     taskWrapper:{
         paddingTop:80,
